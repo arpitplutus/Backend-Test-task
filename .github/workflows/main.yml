@@ -38,8 +38,7 @@ jobs:
 
       - name: Build Docker Image
         run: |
-          docker build -t poojamishra1/bookproject:$GITHUB_SHA .
-          docker tag poojamishra1/bookproject:$GITHUB_SHA poojamishra1/BookProject:latest
+          docker build -t bookstore:latest .
 
       - name: Push Docker Image
         uses: docker/build-push-action@v2
@@ -47,7 +46,6 @@ jobs:
           context: .
           push: true
           tags: |
-            poojamishra1/bookproject:$GITHUB_SHA
             poojamishra1/bookproject:latest
 
       - name: Deploy to Docker Compose
