@@ -1,20 +1,20 @@
 import { Controller, Get, Post, Body, Query, Res, Req } from '@nestjs/common';
-import { ProductsService } from './book.service';
-import { CreateProductDto } from './dto/create-book.dto';
+import { BookService } from './book.service';
+import { CreateBookDto } from './dto/create-book.dto';
 import { Request, Response } from 'express';
 
 @Controller('books')
-export class ProductsController {
-  constructor(private readonly productsService: ProductsService) {}
+export class BookController {
+  constructor(private readonly bookService: BookService) {}
 
   @Post()
   async create(
     @Req() req: Request,
     @Res() res: Response,
-    @Body() createProductDto: CreateProductDto,
+    @Body() createBookDto: CreateBookDto,
   ) {
-    // return this.productsService.create(createProductDto);
-    const createData = await this.productsService.create(createProductDto);
+    // return this.bookService.create(createBookDto);
+    const createData = await this.bookService.create(createBookDto);
     if (res) {
       return res.send(createData);
     }
@@ -22,7 +22,7 @@ export class ProductsController {
 
   @Get()
   async findAll(@Req() req: Request, @Res() res: Response) {
-    const findAll: any = await this.productsService.findAll();
+    const findAll: any = await this.bookService.findAll();
     if (res) {
       return res.send(findAll);
     }
@@ -35,7 +35,7 @@ export class ProductsController {
     @Res() res: Response,
     @Query('id') id: any,
   ) {
-    const getOne = await this.productsService.findOne(id);
+    const getOne = await this.bookService.findOne(id);
     if (res) {
       return res.send(getOne);
     }
@@ -47,9 +47,9 @@ export class ProductsController {
     @Req() req: Request,
     @Res() res: Response,
     @Query('id') id: string,
-    @Body() updateProductDto: CreateProductDto,
+    @Body() updateBookDto: CreateBookDto,
   ) {
-    const updateData = await this.productsService.update(id, updateProductDto);
+    const updateData = await this.bookService.update(id, updateBookDto);
     // return res.send(updateData);
     if (res) {
       return res.send(updateData);
@@ -58,7 +58,7 @@ export class ProductsController {
 
   // @Post('/delete')
   // async remove(@Req() req: Request, @Res() res: Response, @Query('id') id: string) {
-  //   let deleteData = await this.productsService.remove(+id);
+  //   let deleteData = await this.bookService.remove(+id);
   //   return res.send(deleteData);
   // }
 
@@ -68,7 +68,7 @@ export class ProductsController {
     @Res() res: Response,
     @Query('id') id: any,
   ) {
-    const result = await this.productsService.softDelete(id);
+    const result = await this.bookService.softDelete(id);
     // return res.status(result.status).json(result);
     if (res) {
       return res.send(result);
@@ -77,7 +77,7 @@ export class ProductsController {
 
   @Post('/search') // Assuming you want to change it to a POST request
   async search(@Body() requestBody: { query: string }) {
-    const result = await this.productsService.search(requestBody.query);
+    const result = await this.bookService.search(requestBody.query);
     return result;
   }
 }

@@ -6,21 +6,21 @@ import {
   InternalServerErrorException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { CreateProductDto } from './dto/create-book.dto';
-import { UpdateProductDto } from './dto/update-book.dto';
+import { CreateBookDto } from './dto/create-book.dto';
+import { UpdateBookDto } from './dto/update-book.dto';
 import { Like, Repository } from 'typeorm';
-import { products } from './entities/book.entity';
+import { book } from './entities/book.entity';
 
 @Injectable()
-export class ProductsService {
+export class BookService {
   constructor(
-    @InjectRepository(products)
-    private readonly productRepository: Repository<products>,
+    @InjectRepository(book)
+    private readonly bookRepository: Repository<book>,
   ) {}
 
-  async create(createProductDto: CreateProductDto) {
-    const petsDetails = this.productRepository.create(createProductDto);
-    await this.productRepository.save(petsDetails);
+  async create(createBookDto: CreateBookDto) {
+    const petsDetails = this.bookRepository.create(createBookDto);
+    await this.bookRepository.save(petsDetails);
     return {
       msg: 'Data Added successfully',
       status: HttpStatus.OK,
@@ -29,7 +29,7 @@ export class ProductsService {
   }
 
   async findAll() {
-    const findAll = await this.productRepository.findAndCount({
+    const findAll = await this.bookRepository.findAndCount({
       where: {
         isDeleted: false,
       },
@@ -44,7 +44,7 @@ export class ProductsService {
   }
 
   async findOne(id: any) {
-    const findOne = await this.productRepository.findOne({
+    const findOne = await this.bookRepository.findOne({
       where: {
         id: id,
         isDeleted: false,
@@ -58,9 +58,9 @@ export class ProductsService {
     };
   }
 
-  async update(id: any, updateProductDto: UpdateProductDto) {
+  async update(id: any, updateBookDto: UpdateBookDto) {
     try {
-      const existingProduct: any = await this.productRepository.findOne({
+      const existingProduct: any = await this.bookRepository.findOne({
         where: {
           id: id,
           isDeleted: false,
@@ -70,9 +70,9 @@ export class ProductsService {
       if (!existingProduct) {
         throw new NotFoundException(`Product with id ${id} not found`);
       }
-      const result: any = await this.productRepository.update(
+      const result: any = await this.bookRepository.update(
         existingProduct,
-        updateProductDto,
+        updateBookDto,
       );
       return {
         status: HttpStatus.OK,
@@ -87,7 +87,7 @@ export class ProductsService {
   }
 
   async remove(id: any) {
-    const result: any = await this.productRepository.delete(id);
+    const result: any = await this.bookRepository.delete(id);
     return {
       status: HttpStatus.OK,
       messsage: 'Data deleted successfully',
@@ -97,7 +97,7 @@ export class ProductsService {
   }
 
   async softDelete(id: any) {
-    const product = await this.productRepository.findOne({
+    const product = await this.bookRepository.findOne({
       where: {
         id: id,
         isDeleted: false,
@@ -107,7 +107,7 @@ export class ProductsService {
       throw new BadRequestException({ error: 'Product not found.' });
     }
     product.isDeleted = true;
-    await this.productRepository.save(product);
+    await this.bookRepository.save(product);
     return {
       status: HttpStatus.OK,
       message: 'Soft delete successful',
@@ -115,7 +115,7 @@ export class ProductsService {
   }
 
   async search(query: string) {
-    const searchResults = await this.productRepository.findAndCount({
+    const searchResults = await this.bookRepository.findAndCount({
       where: [
         { title: Like(`%${query}%`), isDeleted: false },
         { description: Like(`%${query}%`), isDeleted: false },

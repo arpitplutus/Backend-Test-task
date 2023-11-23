@@ -1,37 +1,37 @@
 /* eslint-disable prettier/prettier */
 import { Test, TestingModule } from '@nestjs/testing';
-import { ProductsController } from './book.controller';
-import { ProductsService } from './book.service';
-import { CreateProductDto } from './dto/create-book.dto';
+import { BookController } from './book.controller';
+import { BookService } from './book.service';
+import { CreateBookDto } from './dto/create-book.dto';
 import { Repository } from 'typeorm/repository/Repository';
 import { getRepositoryToken } from '@nestjs/typeorm/dist/common/typeorm.utils';
-import { products } from './entities/book.entity';
+import { book } from './entities/book.entity';
 
 
-describe('ProductsController', () => {
-    let controller: ProductsController;
-    let service: ProductsService;
+describe('BookController', () => {
+    let controller: BookController;
+    let service: BookService;
 
     beforeEach(async () => {
         const module: TestingModule = await Test.createTestingModule({
             imports: [],
-            controllers: [ProductsController],
+            controllers: [BookController],
             providers: [
-                ProductsService,
+                BookService,
                 {
-                    provide: getRepositoryToken(products),
+                    provide: getRepositoryToken(book),
                     useClass: Repository,
                 },
             ],
         }).compile();
 
-        controller = module.get<ProductsController>(ProductsController);
-        service = module.get<ProductsService>(ProductsService);
+        controller = module.get<BookController>(BookController);
+        service = module.get<BookService>(BookService);
     });
 
     describe('create', () => {
         it('should create a Books', async () => {
-            const createProductDto: CreateProductDto = {
+            const createBookDto: CreateBookDto = {
                 title: 'Test Book',
                 description: 'A test book',
                 author: 'Test Author',
@@ -40,10 +40,10 @@ describe('ProductsController', () => {
             const expectedResult: any = {
                 msg: 'Data Added successfully',
                 status: 200,
-                data: createProductDto,
+                data: createBookDto,
             };
             jest.spyOn(service, 'create').mockResolvedValue(expectedResult);
-            const result = await controller.create(null, null, createProductDto);
+            const result = await controller.create(null, null, createBookDto);
             return result
         });
     });
@@ -76,7 +76,7 @@ describe('ProductsController', () => {
     describe('update', () => {
         it('should update a Book by ID', async () => {
             const Bookid = '123';
-            const updateProductDto: CreateProductDto = {
+            const updateBookDto: CreateBookDto = {
                 title: 'Updated Book Title',
                 description: 'Updated book description',
                 author: 'Updated Author',
@@ -85,10 +85,10 @@ describe('ProductsController', () => {
                 status: 200,
                 message: 'Data updated successfully',
                 totalData: 1,
-                result: { updateProductDto },
+                result: { updateBookDto },
             };
             jest.spyOn(service, 'update').mockResolvedValue(expectedResult);
-            const result = await controller.update(null, null, Bookid, updateProductDto);
+            const result = await controller.update(null, null, Bookid, updateBookDto);
             return result
         });
     });

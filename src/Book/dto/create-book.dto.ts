@@ -1,6 +1,6 @@
 import { IsString, MinLength } from 'class-validator';
 
-export class CreateProductDto {
+export class CreateBookDto {
   @IsString()
   @MinLength(4)
   title: string;

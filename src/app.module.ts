@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { AppService } from './app.service';
-import { ProductsModule } from './products/book.module';
+import { BooksModule } from './Book/book.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
 @Module({
@@ -15,7 +15,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
       autoLoadEntities: true,
       synchronize: true,
     }),
-    ProductsModule,
+    BooksModule,
   ],
   controllers: [],
   providers: [AppService],
