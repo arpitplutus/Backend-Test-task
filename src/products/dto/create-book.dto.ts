@@ -1,19 +1,13 @@
-import { IsString, IsNotEmpty, MinLength } from "class-validator";
-import { Column } from "typeorm";
+import { IsString, MinLength } from 'class-validator';
 
 export class CreateProductDto {
+  @IsString()
+  @MinLength(4)
+  title: string;
 
+  @IsString()
+  description: string;
 
-    @IsString()
-    @MinLength(4)
-    title: string;
-
-    @IsString()
-    description: string;
-
-    @IsString()
-    author: string;
-
-    @Column({ default: false }) // Default to false, indicating the product is not deleted
-    isDeleted: boolean;
+  @IsString()
+  author: string;
 }

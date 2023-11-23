@@ -1,29 +1,28 @@
-import { BeforeInsert, Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { BeforeInsert, Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
-export class books {
+export class products {
+  @PrimaryGeneratedColumn()
+  id: number;
 
-    @PrimaryGeneratedColumn()
-    id: number;
-  
-    @Column()
-    title: string;
-  
-    @Column()
-    isbn: string;
-  
-    @Column({ nullable: true })
-    description: string;
-  
-    @Column({ nullable: true })
-    author: string;
-    
-    @Column({ default: false }) // Default to false, indicating the product is not deleted
-    isDeleted: boolean;
-  
-    @BeforeInsert()
-    generateUniqueISBN() {
-      const randomNumber = Math.floor(Math.random() * 10000000000);
-      this.isbn = `BOOK-${randomNumber}`;
-    }
+  @Column()
+  title: string;
+
+  @Column()
+  isbn: string;
+
+  @Column({ nullable: true })
+  description: string;
+
+  @Column({ nullable: true })
+  author: string;
+
+  @Column({ default: false })
+  isDeleted: boolean;
+
+  @BeforeInsert()
+  generateUniqueISBN() {
+    const randomNumber = Math.floor(Math.random() * 10000000000);
+    this.isbn = `BOOK-${randomNumber}`;
+  }
 }

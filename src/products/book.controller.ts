@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Query, Res , Req } from '@nestjs/common';
+import { Controller, Get, Post, Body, Query, Res, Req } from '@nestjs/common';
 import { ProductsService } from './book.service';
 import { CreateProductDto } from './dto/create-book.dto';
 import { Request, Response } from 'express';
@@ -8,27 +8,41 @@ export class ProductsController {
   constructor(private readonly productsService: ProductsService) {}
 
   @Post()
-  async create(@Req() req:Request, @Res() res: Response,@Body() createProductDto: CreateProductDto) {
+  async create(
+    @Req() req: Request,
+    @Res() res: Response,
+    @Body() createProductDto: CreateProductDto,
+  ) {
     // return this.productsService.create(createProductDto);
-    let createData = await this.productsService.create(createProductDto);
+    const createData = await this.productsService.create(createProductDto);
     return res.send(createData);
   }
 
   @Get()
-  async findAll(@Req() req:Request, @Res() res: Response) {
-    let findAll: any = await this.productsService.findAll();
+  async findAll(@Req() req: Request, @Res() res: Response) {
+    const findAll: any = await this.productsService.findAll();
     return res.send(findAll);
   }
 
   @Get('/getOne')
-  async findOne(@Req() req:Request, @Res() res: Response, @Query('id') id: any) {
-    let getOne = await this.productsService.findOne(id);
-    return res.send(getOne)
+  async findOne(
+    @Req() req: Request,
+    @Res() res: Response,
+    @Query('id') id: any,
+  ) {
+    const getOne = await this.productsService.findOne(id);
+    return res.send(getOne);
   }
 
   @Post('/update')
-  async update(@Req() req:Request, @Res() res: Response, @Query('id') id: string, @Body() updateProductDto: CreateProductDto) {
-    let updateData = await this.productsService.update(id, updateProductDto);
+  async update(
+    @Req() req: Request,
+    @Res() res: Response,
+    @Query('id') id: string,
+    @Body() updateProductDto: CreateProductDto,
+  ) {
+    const updateData = await this.productsService.update(id, updateProductDto);
+    console.log(updateData);
     return res.send(updateData);
   }
 
@@ -39,15 +53,18 @@ export class ProductsController {
   // }
 
   @Post('/delete')
-  async softDelete(@Req() req: Request, @Res() res: Response, @Query('id') id: string) {
-    const result = await this.productsService.softDelete(+id);
+  async softDelete(
+    @Req() req: Request,
+    @Res() res: Response,
+    @Query('id') id: any,
+  ) {
+    const result = await this.productsService.softDelete(id);
     return res.status(result.status).json(result);
   }
-  
 
-  @Get('search')
-  async search(@Query('query') query: string) {
-    const result = await this.productsService.search(query);
+  @Post('/search') // Assuming you want to change it to a POST request
+  async search(@Body() requestBody: { query: string }) {
+    const result = await this.productsService.search(requestBody.query);
     return result;
   }
 }
