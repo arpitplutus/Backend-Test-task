@@ -15,13 +15,18 @@ export class ProductsController {
   ) {
     // return this.productsService.create(createProductDto);
     const createData = await this.productsService.create(createProductDto);
-    return res.send(createData);
+    if (res) {
+      return res.send(createData);
+    }
   }
 
   @Get()
   async findAll(@Req() req: Request, @Res() res: Response) {
     const findAll: any = await this.productsService.findAll();
-    return res.send(findAll);
+    if (res) {
+      return res.send(findAll);
+    }
+    // return res.send();
   }
 
   @Get('/getOne')
@@ -31,7 +36,10 @@ export class ProductsController {
     @Query('id') id: any,
   ) {
     const getOne = await this.productsService.findOne(id);
-    return res.send(getOne);
+    if (res) {
+      return res.send(getOne);
+    }
+    // return res.send(getOne);
   }
 
   @Post('/update')
@@ -42,8 +50,10 @@ export class ProductsController {
     @Body() updateProductDto: CreateProductDto,
   ) {
     const updateData = await this.productsService.update(id, updateProductDto);
-    console.log(updateData);
-    return res.send(updateData);
+    // return res.send(updateData);
+    if (res) {
+      return res.send(updateData);
+    }
   }
 
   // @Post('/delete')
@@ -59,7 +69,10 @@ export class ProductsController {
     @Query('id') id: any,
   ) {
     const result = await this.productsService.softDelete(id);
-    return res.status(result.status).json(result);
+    // return res.status(result.status).json(result);
+    if (res) {
+      return res.send(result);
+    }
   }
 
   @Post('/search') // Assuming you want to change it to a POST request

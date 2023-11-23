@@ -34,7 +34,6 @@ export class ProductsService {
         isDeleted: false,
       },
     });
-    console.log(findAll[1]);
     if (!findAll) throw new BadRequestException({ error: 'Data Not Found' });
     return {
       status: HttpStatus.OK,
@@ -107,7 +106,6 @@ export class ProductsService {
     if (!product) {
       throw new BadRequestException({ error: 'Product not found.' });
     }
-    console.log(product, 'productproduct');
     product.isDeleted = true;
     await this.productRepository.save(product);
     return {
